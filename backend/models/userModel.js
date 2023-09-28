@@ -63,10 +63,17 @@ userSchema.methods.getJWTToken = function () {
 
 // Compare Password
 
-userSchema.methods.comparePassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword2 = async function (argpassword) {
+  console.log("\n\nargpassword: ", argpassword, "\n\nthis.password: ", this.password)
+  return await bcrypt.compare(argpassword, this.password);
 };
-
+userSchema.methods.compareBcryptPasswords = async (hashedPassword, plainPassword) => {
+  try {
+    return await bcrypt.compare(plainPassword, hashedPassword);
+  } catch (error) {
+    throw error; // Handle the error appropriately in your application
+  }
+}
 // Generating Password Reset Token
 userSchema.methods.getResetPasswordToken = function () {
   // Generating Token
