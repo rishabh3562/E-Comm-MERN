@@ -4,6 +4,7 @@ const catchAsyncErrors = require('../middleware/catchAsyncErrors');
 const APIFeatures = require('../utils/apiFeatures');
 const cloudinary = require('cloudinary');
 const bcrypt = require('bcryptjs');
+const { sendToken } = require('../utils/jwtToken');
 // const bcrypt = require('bcrypt');
 // const User = require('./models/User'); // Import your User model here
 
@@ -49,32 +50,25 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler('Please enter email and password', 400));
   }
 
-  try {
-    // Finding the user in the database
-    const user = await User.findOne({ email }).select('+password');
 
-    if (!user) {
-      return next(new ErrorHandler('Invalid email or password', 401));
-    }
+  // Finding the user in the database
+  const user = await User.findOne({ email }).select('+password');
 
-    // Comparing the provided password with the stored hashed password
-    const isPasswordMatched = await user.compareBcryptPasswords(user.password, password);
-// console.log("\n\nisPasswordMatched: ", isPasswordMatched);
-// console.log("\n\nuser.schema.mtehods",user.schema.methods)
-    if (!isPasswordMatched) {
-      return next(new ErrorHandler('Invalid email or password', 401));
-    }
-
-    // If the password is correct, generate a JWT token and send a response
-    const token = user.getJWTToken();
-    res.status(200).json({
-      success: true,
-      token
-    });
-  } catch (error) {
-    // Handle any errors that occur during the process
-    return next(new ErrorHandler('Internal Server Error', 500));
+  if (!user) {
+    return next(new ErrorHandler('Invalid email or password', 401));
   }
+
+  // Comparing the provided password with the stored hashed password
+  const isPasswordMatched = await user.compareBcryptPasswords(user.password, password);
+  // console.log("\n\nisPasswordMatched: ", isPasswordMatched);
+  // console.log("\n\nuser.schema.mtehods",user.schema.methods)
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler('Invalid email or password', 401));
+  }
+
+  // If the password is correct, generate a JWT token and send a response
+  sendToken(user, 200, res);
+
 });
 
 
