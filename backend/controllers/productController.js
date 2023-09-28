@@ -55,12 +55,12 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
 
 
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
-
+res.send({message:'update'})
 });
 
 
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
-
+    res.send({ message: 'delete' })
 });
 
 
