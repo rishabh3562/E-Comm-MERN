@@ -32,4 +32,4 @@ const authorizeRoles = (...roles) => {
   };
 };
 
-module.exports = { isAuthenticatedUser };
+module.exports = { isAuthenticatedUser,authorizeRoles };
