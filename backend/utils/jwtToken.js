@@ -1,8 +1,8 @@
 // const dotenv = require('dotenv');
 // dotenv.config({ path: '../backend' });
 // console.log(process.env.COOKIE_EXPIRE)
-console.log(process.env.PORT)
-console.log(process.env.COOKIE_EXPIRE)
+// console.log(process.env.PORT)
+// console.log(process.env.COOKIE_EXPIRE)
 // const cookieExpireDays = parseInt(process.env.COOKIE_EXPIRE, 10);
 const cookieExpireDays= 7;
 if (isNaN(cookieExpireDays)) {
